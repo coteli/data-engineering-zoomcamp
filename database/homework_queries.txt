@@ -1,0 +1,47 @@
+# How many taxi trips were totally made on January 15?
+SELECT 
+	CAST(lpep_pickup_datetime AS DATE) as "day",
+	COUNT(1)
+FROM 
+	green_taxi_data
+GROUP BY
+	CAST(lpep_pickup_datetime AS DATE)
+ORDER BY "day";
+
+
+# Which was the day with the largest trip distance Use the pick up time for your calculations?
+SELECT 
+	CAST(lpep_pickup_datetime AS DATE) as "day",
+	MAX(trip_distance) as "distance"
+FROM 
+	green_taxi_data
+GROUP BY
+	CAST(lpep_pickup_datetime AS DATE)
+ORDER BY "distance" DESC;
+
+
+# In 2019-01-01 how many trips had 2 and 3 passengers?
+SELECT 
+	CAST(lpep_pickup_datetime AS DATE) as "day",
+	passenger_count,
+	COUNT(1)
+FROM 
+	green_taxi_data
+WHERE passenger_count BETWEEN 2 AND 3
+GROUP BY
+	CAST(lpep_pickup_datetime AS DATE),
+	passenger_count
+ORDER BY "day";
+
+# For the passengers picked up in the Astoria Zone which was the drop off zone that had the largest tip?
+SELECT 
+	"PULocationID",
+	"DOLocationID",
+	tip_amount,
+	"Zone" as dropoff_zone
+FROM 
+	green_taxi_data t JOIN zones z
+	ON t."DOLocationID" = z."LocationID"
+WHERE 
+	"PULocationID" = 7
+ORDER BY tip_amount DESC;
